@@ -7,7 +7,7 @@
 [![React](https://img.shields.io/badge/React-18+-61DAFB?logo=react)](https://reactjs.org/)
 [![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?logo=supabase)](https://supabase.com/)
 
-**Live Demo:** [https://catatan-aman-cloud.netlify.app]([https://catatan-aman-cloud.netlify.app](https://notelist-encrypted.netlify.app/))
+**Live Demo:** [https://notelist-encrypted.netlify.app/]([[https://notelist-encrypted.netlify.app/]])
 
 ---
 
