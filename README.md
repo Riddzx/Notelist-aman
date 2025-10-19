@@ -553,20 +553,6 @@ git push origin feature/amazing-feature
 
 ---
 
-## 📝 Lisensi
-
-Project ini dilisensikan di bawah **MIT License** - lihat file [LICENSE](LICENSE) untuk detail.
-
----
-
-## 📞 Kontak & Support
-
-- **Email:** [your-email@example.com]
-- **Issues:** [GitHub Issues](https://github.com/muhammadridha/catatan-aman-cloud/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/muhammadridha/catatan-aman-cloud/discussions)
-
----
-
 ## 🙏 Acknowledgments
 
 - [React](https://reactjs.org/) - UI Framework
@@ -577,11 +563,3 @@ Project ini dilisensikan di bawah **MIT License** - lihat file [LICENSE](LICENSE
 - [Netlify](https://netlify.com/) - Hosting Platform
 
 ---
-
-<div align="center">
-
-**Buat dengan ❤️ oleh [Muhammad Ridha](https://github.com/muhammadridha)**
-
-⭐ Jika project ini membantu, silakan beri star!
-
-</div>
