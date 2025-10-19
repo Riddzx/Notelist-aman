@@ -1,6 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
+import HCaptcha from '@hcaptcha/react-hcaptcha'
 import { supabase } from '../SupaBaseClient'
 import './Auth.css'
+
+const HCAPTCHA_SITEKEY = import.meta.env.VITE_HCAPTCHA_SITEKEY
 
 export default function Auth() {
   const [email, setEmail] = useState('')
@@ -8,12 +11,30 @@ export default function Auth() {
   const [loading, setLoading] = useState(false)
   const [isSignUp, setIsSignUp] = useState(false)
   const [message, setMessage] = useState('')
-  const [messageType, setMessageType] = useState('') // 'success' atau 'error'
+  const [messageType, setMessageType] = useState('')
+  const [captchaToken, setCaptchaToken] = useState(null)
+  const captchaRef = useRef()
+
+  const handleCaptchaVerify = (token) => {
+    setCaptchaToken(token)
+  }
+
+  const handleCaptchaExpire = () => {
+    setCaptchaToken(null)
+  }
 
   const handleAuth = async (e) => {
     e.preventDefault()
-    setLoading(true)
     setMessage('')
+
+    // Validasi captcha
+    if (!captchaToken) {
+      setMessage('❌ Silakan verifikasi captcha terlebih dahulu')
+      setMessageType('error')
+      return
+    }
+
+    setLoading(true)
 
     try {
       if (isSignUp) {
@@ -30,6 +51,8 @@ export default function Auth() {
         setEmail('')
         setPassword('')
         setIsSignUp(false)
+        setCaptchaToken(null)
+        captchaRef.current?.reset()
       } else {
         // Proses Login
         const { data, error } = await supabase.auth.signInWithPassword({
@@ -41,11 +64,19 @@ export default function Auth() {
 
         setMessage('✅ Login berhasil! Selamat datang.')
         setMessageType('success')
+        setEmail('')
+        setPassword('')
+        setCaptchaToken(null)
+        captchaRef.current?.reset()
       }
     } catch (error) {
       setMessage(`❌ Error: ${error.message}`)
       setMessageType('error')
       console.error('Auth error:', error)
+
+      // Reset captcha saat error
+      setCaptchaToken(null)
+      captchaRef.current?.reset()
     } finally {
       setLoading(false)
     }
@@ -87,6 +118,15 @@ export default function Auth() {
             />
           </div>
 
+          <div className="form-group captcha-group">
+            <HCaptcha
+              ref={captchaRef}
+              sitekey={HCAPTCHA_SITEKEY}
+              onVerify={handleCaptchaVerify}
+              onExpire={handleCaptchaExpire}
+            />
+          </div>
+
           {message && (
             <div className={`message ${messageType}`}>
               {message}
@@ -95,7 +135,7 @@ export default function Auth() {
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || !captchaToken}
             className="auth-button"
           >
             {loading ? '⏳ Loading...' : isSignUp ? '📝 Daftar' : '🔓 Login'}
@@ -110,6 +150,8 @@ export default function Auth() {
               setMessage('')
               setEmail('')
               setPassword('')
+              setCaptchaToken(null)
+              captchaRef.current?.reset()
             }}
             className="toggle-button"
           >
