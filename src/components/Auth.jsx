@@ -1,40 +1,40 @@
-import React, { useState, useRef } from 'react'
-import HCaptcha from '@hcaptcha/react-hcaptcha'
-import { supabase } from '../SupaBaseClient'
-import './Auth.css'
+import React, { useState, useRef } from "react";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
+import { supabase } from "../SupaBaseClient";
+import "./Auth.css";
 
-const HCAPTCHA_SITEKEY = import.meta.env.VITE_HCAPTCHA_SITEKEY
+const HCAPTCHA_SITEKEY = import.meta.env.VITE_HCAPTCHA_SITEKEY;
 
 export default function Auth() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [isSignUp, setIsSignUp] = useState(false)
-  const [message, setMessage] = useState('')
-  const [messageType, setMessageType] = useState('')
-  const [captchaToken, setCaptchaToken] = useState(null)
-  const captchaRef = useRef()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
+  const [captchaToken, setCaptchaToken] = useState(null);
+  const captchaRef = useRef();
 
   const handleCaptchaVerify = (token) => {
-    setCaptchaToken(token)
-  }
+    setCaptchaToken(token);
+  };
 
   const handleCaptchaExpire = () => {
-    setCaptchaToken(null)
-  }
+    setCaptchaToken(null);
+  };
 
   const handleAuth = async (e) => {
-    e.preventDefault()
-    setMessage('')
+    e.preventDefault();
+    setMessage("");
 
     // Validasi captcha
     if (!captchaToken) {
-      setMessage('❌ Silakan verifikasi captcha terlebih dahulu')
-      setMessageType('error')
-      return
+      setMessage("❌ Silakan verifikasi captcha terlebih dahulu");
+      setMessageType("error");
+      return;
     }
 
-    setLoading(true)
+    setLoading(true);
 
     try {
       if (isSignUp) {
@@ -42,45 +42,45 @@ export default function Auth() {
         const { data, error } = await supabase.auth.signUp({
           email,
           password,
-        })
+        });
 
-        if (error) throw error
+        if (error) throw error;
 
-        setMessage('✅ Pendaftaran berhasil! Cek email Anda untuk verifikasi.')
-        setMessageType('success')
-        setEmail('')
-        setPassword('')
-        setIsSignUp(false)
-        setCaptchaToken(null)
-        captchaRef.current?.reset()
+        setMessage("✅ Pendaftaran berhasil! Cek email Anda untuk verifikasi.");
+        setMessageType("success");
+        setEmail("");
+        setPassword("");
+        setIsSignUp(false);
+        setCaptchaToken(null);
+        captchaRef.current?.reset();
       } else {
         // Proses Login
         const { data, error } = await supabase.auth.signInWithPassword({
           email,
           password,
-        })
+        });
 
-        if (error) throw error
+        if (error) throw error;
 
-        setMessage('✅ Login berhasil! Selamat datang.')
-        setMessageType('success')
-        setEmail('')
-        setPassword('')
-        setCaptchaToken(null)
-        captchaRef.current?.reset()
+        setMessage("✅ Login berhasil! Selamat datang.");
+        setMessageType("success");
+        setEmail("");
+        setPassword("");
+        setCaptchaToken(null);
+        captchaRef.current?.reset();
       }
     } catch (error) {
-      setMessage(`❌ Error: ${error.message}`)
-      setMessageType('error')
-      console.error('Auth error:', error)
+      setMessage(`❌ Error: ${error.message}`);
+      setMessageType("error");
+      console.error("Auth error:", error);
 
       // Reset captcha saat error
-      setCaptchaToken(null)
-      captchaRef.current?.reset()
+      setCaptchaToken(null);
+      captchaRef.current?.reset();
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="auth-container">
@@ -127,18 +127,14 @@ export default function Auth() {
             />
           </div>
 
-          {message && (
-            <div className={`message ${messageType}`}>
-              {message}
-            </div>
-          )}
+          {message && <div className={`message ${messageType}`}>{message}</div>}
 
           <button
             type="submit"
             disabled={loading || !captchaToken}
             className="auth-button"
           >
-            {loading ? '⏳ Loading...' : isSignUp ? '📝 Daftar' : '🔓 Login'}
+            {loading ? "⏳ Loading..." : isSignUp ? "📝 Daftar" : "🔓 Login"}
           </button>
         </form>
 
@@ -146,19 +142,26 @@ export default function Auth() {
           <button
             type="button"
             onClick={() => {
-              setIsSignUp(!isSignUp)
-              setMessage('')
-              setEmail('')
-              setPassword('')
-              setCaptchaToken(null)
-              captchaRef.current?.reset()
+              setIsSignUp(!isSignUp);
+              setMessage("");
+              setEmail("");
+              setPassword("");
+              setCaptchaToken(null);
+              // Menjadi:
+              if (captchaRef.current) {
+                captchaRef.current.reset();
+              }
             }}
             className="toggle-button"
           >
             {isSignUp ? (
-              <>Sudah punya akun? <strong>Login di sini</strong></>
+              <>
+                Sudah punya akun? <strong>Login di sini</strong>
+              </>
             ) : (
-              <>Belum punya akun? <strong>Daftar di sini</strong></>
+              <>
+                Belum punya akun? <strong>Daftar di sini</strong>
+              </>
             )}
           </button>
         </div>
@@ -169,5 +172,5 @@ export default function Auth() {
         </div>
       </div>
     </div>
-  )
+  );
 }
