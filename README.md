@@ -2,12 +2,11 @@
 
 > **Aplikasi note-taking berbasis cloud dengan enkripsi end-to-end dan keamanan enterprise-grade**
 
-[![Deploy Status](https://api.netlify.com/api/v1/badges/YOUR-SITE-ID/deploy-status)](https://app.netlify.com/sites/YOUR-SITE-NAME/deploys)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![React](https://img.shields.io/badge/React-18+-61DAFB?logo=react)](https://reactjs.org/)
 [![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?logo=supabase)](https://supabase.com/)
 
-**Live Demo:** [https://notelist-encrypted.netlify.app/]([[https://notelist-encrypted.netlify.app/]])
+**Live Demo:** [https://notelist-encrypted.netlify.app]([[https://notelist-encrypted.netlify.app]])
 
 ---
 
